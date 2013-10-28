@@ -15,11 +15,14 @@ uniform vec3 un_LightIntensities[16];
 uniform vec3 un_LightAmbientIntensity;
 
 // TODO: (Shaders 1 Problem 1) Specify any varying variables here
+varying vec3 ambient_Color;
+varying vec3 diffuse_Color;
+varying vec3 specular_Color;
 
 void main(void)
 {
 	// TODO: (Shaders 1 Problem 1) Implement the fragment shader for per-pixel
 	// Blinn-Phong here
-	gl_FragColor = vec4(1, 0, 0, 1);
+	gl_FragColor = vec4(ambient_Color+diffuse_Color+specular_Color, 1);
 }
 
