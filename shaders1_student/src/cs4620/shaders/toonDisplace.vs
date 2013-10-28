@@ -25,5 +25,8 @@ void main()
 {
 	// TODO: (Shaders 1 Problem 1) Implement the vertex shader for
 	// the toon displacement shader here
+	vec3 ex_Normal = normalize(un_NormalMatrix * in_Normal);
+	vec4 ex_EyeSpacePosition = un_ModelView * vec4(in_Vertex, 1);
+	vec3 meshVertex = ex_EyeSpacePosition.xyz + displaceScale * ex_Normal;
     gl_Position = un_Projection * un_ModelView * vec4(in_Vertex, 1);
 }
