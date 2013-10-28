@@ -15,14 +15,36 @@ uniform vec3 un_LightIntensities[16];
 uniform vec3 un_LightAmbientIntensity;
 
 // TODO: (Shaders 1 Problem 1) Specify any varying variables here
-varying vec3 ambient_Color;
-varying vec3 diffuse_Color;
-varying vec3 specular_Color;
+varying vec3 ex_Normal;
+varying vec4 ex_EyeSpacePosition;
 
 void main(void)
 {
 	// TODO: (Shaders 1 Problem 1) Implement the fragment shader for per-pixel
 	// Blinn-Phong here
-	gl_FragColor = vec4(ambient_Color+diffuse_Color+specular_Color, 1);
+	
+	vec3 unitToLight = vec3(0.0,0.0,0.0);
+	vec3 unitToEye = normalize(-ex_EyeSpacePosition.xyz);
+	vec3 unitHalfVec = vec3(0.0,0.0,0.0);
+	vec3 unitNormal = normalize(ex_Normal);
+	
+	// La = ka Ia
+	vec3 colorRGB = un_AmbientColor * un_LightAmbientIntensity;
+	float nDotL = 0.0;
+	float nDotH = 0.0;
+	for (int i = 0; i < 16; i++)
+	{
+		unitToLight = normalize(un_LightPositions[i] - ex_EyeSpacePosition.xyz);
+		unitHalfVec = normalize(unitToLight + unitToEye);
+		nDotL = dot(unitNormal, unitToLight);
+		nDotH = dot(unitNormal, unitHalfVec);
+		
+		// Diffuse and specular contribute only when n.l > 0
+		colorRGB = colorRGB + un_LightIntensities[i] *
+			( un_DiffuseColor * max(0.0, nDotL)
+			+ un_SpecularColor * pow(max(0.0, nDotH), un_Shininess) * step(0.0, nDotL)
+			);
+	}
+	gl_FragColor = vec4(colorRGB, 1);
 }
 
