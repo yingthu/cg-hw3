@@ -23,10 +23,34 @@ uniform mat4 un_ObjToFrame;
 // TODO: (Shaders 1 Problem 2) Declare any additional uniform variables here
 
 // TODO: (Shaders 1 Problem 2) Declare any varying variables here
+varying vec3 ex_Normal;
+varying vec4 ex_EyeSpacePosition;
 
 void main()
 {
 	// TODO: (Shaders 1 Problem 2) Implement the fragment shader for the flower shader here
-	gl_FragColor = vec4(1, 0, 0, 1);
+	vec3 unitToLight = vec3(0.0,0.0,0.0);
+	vec3 unitToEye = normalize(-ex_EyeSpacePosition.xyz);
+	vec3 unitHalfVec = vec3(0.0,0.0,0.0);
+	vec3 unitNormal = normalize(ex_Normal);
+	
+	// La = ka Ia
+	vec3 colorRGB = un_AmbientColor * un_LightAmbientIntensity;
+	float nDotL = 0.0;
+	float nDotH = 0.0;
+	for (int i = 0; i < 16; i++)
+	{
+		unitToLight = normalize(un_LightPositions[i] - ex_EyeSpacePosition.xyz);
+		unitHalfVec = normalize(unitToLight + unitToEye);
+		nDotL = dot(unitNormal, unitToLight);
+		nDotH = dot(unitNormal, unitHalfVec);
+		
+		// Diffuse and specular contribute only when n.l > 0
+		colorRGB = colorRGB + un_LightIntensities[i] *
+			( un_DiffuseColor * max(0.0, nDotL)
+			+ un_SpecularColor * pow(max(0.0, nDotH), un_Shininess) * step(0.0, nDotL)
+			);
+	}
+	gl_FragColor = vec4(colorRGB, 1);
 }
 
