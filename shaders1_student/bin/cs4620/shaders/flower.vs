@@ -40,7 +40,7 @@ void main()
 	
 	// First transform object coordinates to frame coordinates
 	vec3 frameVertex = (un_ObjToFrame * vec4(in_Vertex, 1)).xyz;
-	vec3 frameNormal = (un_ObjToFrame * vec4(in_Normal, 1)).xyz;
+	vec3 frameNormal = (un_ObjToFrame * vec4(in_Normal, 0)).xyz;
 	
 	// Compute frame coordinates when bent
 	float r = R - frameVertex.x;
@@ -53,7 +53,7 @@ void main()
 	
 	// Map back to object space
 	vec3 bentVertex = (un_FrameToObj * vec4(bentframeVertex, 1)).xyz;
-	vec3 bentNormal = (un_FrameToObj * vec4(bentframeNormal, 1)).xyz;
+	vec3 bentNormal = (un_FrameToObj * vec4(bentframeNormal, 0)).xyz;
 	
     gl_Position = un_Projection * un_ModelView * vec4(bentVertex, 1);
     
