@@ -20,7 +20,7 @@ attribute vec3 in_Normal;
 attribute vec2 in_TexCoord;
 
 // TODO (Shaders 2 P3): Declare any varying variables here
-varying vec2 coord;
+varying vec2 ex_TexCoord;
 varying vec3 ex_Normal;
 varying vec4 ex_EyeSpacePosition;
 
@@ -34,5 +34,5 @@ void main() {
 	
 	gl_Position = un_Projection * ex_EyeSpacePosition;
 
-	coord = vec2(in_TexCoord);
+	ex_TexCoord = vec2(in_TexCoord);
 }

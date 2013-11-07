@@ -17,11 +17,13 @@ uniform vec3 un_LightAmbientIntensity;
 uniform sampler2D un_Texture;
 
 // TODO (Shaders 2 P3): Declare any varying variables here
-varying vec2 coord;
+varying vec2 ex_TexCoord;
+varying vec3 ex_Normal;
+varying vec4 ex_EyeSpacePosition;
+
 void main() {
 	// TODO: (Shaders 2 P3): Implement fragment texture shader here
 	// Blinn-Phong here
-	/*
 	vec3 unitToLight = vec3(0.0,0.0,0.0);
 	vec3 unitToEye = normalize(-ex_EyeSpacePosition.xyz);
 	vec3 unitHalfVec = vec3(0.0,0.0,0.0);
@@ -40,11 +42,10 @@ void main() {
 		
 		// Diffuse and specular contribute only when n.l > 0
 		colorRGB = colorRGB + un_LightIntensities[i] *
-			( un_DiffuseColor * max(0.0, nDotL)
+			( un_DiffuseColor * max(0.0, nDotL) * texture2D(un_Texture, ex_TexCoord).xyz
 			+ un_SpecularColor * pow(max(0.0, nDotH), un_Shininess) * step(0.0, nDotL)
 			);
 	}
-	gl_FragColor = vec4(colorRGB, 1);
-	*/
-	gl_FragColor = texture2D(un_Texture, coord);
+	//gl_FragColor = vec4(colorRGB, 1);
+	gl_FragColor = texture2D(un_Texture, ex_TexCoord);
 }

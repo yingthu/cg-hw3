@@ -103,8 +103,8 @@ public class Cylinder extends TriangleMesh
 			
 			tex_index = 2 * i + (2 * num) * 4 + 3 * 2;
 			
-			texCoords[tex_index] = (float) (x[i]/2.0+0.5);
-			texCoords[tex_index+1] = (float) (z[i]/2.0+0.5);
+			texCoords[tex_index] = 1.0f - (float) (x[i]/2.0+0.5);
+			texCoords[tex_index+1] = 1.0f - (float) (z[i]/2.0+0.5);
 			
 			// bottom center
 			index = 3 * i + (3 * num) * 5 + 4 * 3;

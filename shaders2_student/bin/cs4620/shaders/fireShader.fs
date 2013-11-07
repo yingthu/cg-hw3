@@ -21,8 +21,24 @@ uniform float un_Time;
 uniform vec3 un_ScrollSpeeds;
 
 // TODO (Shaders 2 P3): Declare varying variables here
+varying vec2 ex_TexCoord;
+
 
 void main() {
 	// TODO (Shaders 2 P3): Implement the fire fragment shader here
-	gl_FragColor = vec4(1, 0, 0, 1);
+	vec2 texCoordOne = vec2(ex_TexCoord.s, 
+        mod((ex_TexCoord.t + un_Time * un_ScrollSpeeds.x), 1.0));
+        vec4 sampleOne = texture2D(un_NoiseTexture, texCoordOne);
+        
+        vec2 texCoordTwo = vec2(ex_TexCoord.s, 
+        mod((ex_TexCoord.t + un_Time * un_ScrollSpeeds.y), 1.0));
+        vec4 sampleTwo = texture2D(un_NoiseTexture, texCoordTwo);
+        
+        vec2 texCoordThree = vec2(ex_TexCoord.s, 
+        mod((ex_TexCoord.t + un_Time * un_ScrollSpeeds.z), 1.0));
+        vec4 sampleThree = texture2D(un_NoiseTexture, texCoordThree);
+        
+        /* Average all the values and sample from fireTexture*/
+        vec4 avgSample = ((sampleOne + sampleTwo + sampleThree))/3.0;
+        gl_FragColor = texture2D(un_FireTexture, avgSample.st);
 }

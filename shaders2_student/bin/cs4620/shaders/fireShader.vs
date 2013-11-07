@@ -20,9 +20,11 @@ attribute vec3 in_Normal;
 attribute vec2 in_TexCoord;
 
 // TODO (Shaders 2 P3): Add any varying variables you need here
+varying vec2 ex_TexCoord;
+
 
 void main() {
 	// TODO (Shaders 2 P3): Implement the fire vertex shader here
-	
+	ex_TexCoord = vec2(in_TexCoord);
 	gl_Position = un_Projection * un_ModelView * vec4(in_Vertex, 1);
 }
