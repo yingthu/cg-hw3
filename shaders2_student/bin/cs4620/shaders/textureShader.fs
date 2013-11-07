@@ -46,6 +46,5 @@ void main() {
 			+ un_SpecularColor * pow(max(0.0, nDotH), un_Shininess) * step(0.0, nDotL)
 			);
 	}
-	//gl_FragColor = vec4(colorRGB, 1);
-	gl_FragColor = texture2D(un_Texture, ex_TexCoord);
+	gl_FragColor = vec4(colorRGB, 1);
 }
